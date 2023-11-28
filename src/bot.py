@@ -6,6 +6,7 @@ import os
 load_dotenv()
 
 TOKEN = os.getenv('DISCORD_TOKEN')
+CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
 
 intents = discord.Intents.default()
 intents.guilds = True  # サーバーに関するイベントを取得できるようにする
@@ -33,6 +34,8 @@ async def on_ready():
     for channel in channels:
         print(f'Channel: {channel.name}, ID: {channel.id}')
 
+    # サーバーのオブジェクトから、チャンネルのオブジェクトを取得
+    await bot.get_channel(CHANNEL_ID).send('Bot has started.')
 
 @bot.command()
 async def test(ctx, arg):
