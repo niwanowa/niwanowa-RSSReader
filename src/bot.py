@@ -21,10 +21,18 @@ async def on_ready():
     guild_ids = [guild.id for guild in bot.guilds]
     print(f'Bot is in the following guilds: {guild_ids}')
 
-    channel = 1176793517650083908
+    # サーバーIDを指定して、サーバーのオブジェクトを取得
+    guild = bot.get_guild(guild_ids[0])
+    print(f'Bot is in the following guild: {guild}')
 
-    # channelidを元に起動したことをPOST
-    await bot.get_channel(channel).send('Bot has started.')
+    # サーバーのオブジェクトから、チャンネルの一覧を取得
+    channels = guild.channels
+    print(f'Channels in the guild: {channels}')
+
+    # チャンネルの一覧を表示
+    for channel in channels:
+        print(f'Channel: {channel.name}, ID: {channel.id}')
+
 
 @bot.command()
 async def test(ctx, arg):
