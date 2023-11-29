@@ -9,6 +9,7 @@ readme = "README.md"
 python = "3.10.13"
 discord-py = "^2.3.2"
 python-dotenv = "^1.0.0"
+feedparser = "^6.0.10"
 
 
 [build-system]
