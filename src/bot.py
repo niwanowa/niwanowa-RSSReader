@@ -1,7 +1,9 @@
+import asyncio
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 import os
+
 import feedparser
 from datetime import datetime,timedelta,timezone
 import time
@@ -32,24 +34,17 @@ async def on_ready():
     guild = bot.get_guild(guild_ids[0])
     print(f'Bot is in the following guild: {guild}')
 
-    # サーバーのオブジェクトから、チャンネルの一覧を取得
-    channels = guild.channels
-
     # サーバーのオブジェクトから、チャンネルのオブジェクトを取得
     await bot.get_channel(CHANNEL_ID).send('Bot has started.')
 
-    # RSSの取得
-    feed = feedparser.parse(RSS_URL)
+    # 5分おきに実行する
+    while True:
+        # RSSの取得
+        feed = feedparser.parse(RSS_URL)
+        print(f'Get RSS')
+        await bot.loop.create_task(rss_task(feed))
 
-    # RSSのentryを表示
-    for entry in feed.entries:
-        # updated_parsedが5分以内の場合はdiscordに送信
-        pubdate=datetime.fromtimestamp(time.mktime(entry.updated_parsed), timezone.utc)
-        five_minutes_ago = datetime.now(timezone.utc) - timedelta(minutes=5)
-
-        print(f'pubdate: {pubdate}, five_minutes_ago: {five_minutes_ago}, pubdate > five_minutes_ago: {pubdate > five_minutes_ago}')
-        if pubdate > five_minutes_ago:
-            await bot.get_channel(CHANNEL_ID).send(entry.link)
+        await asyncio.sleep(60)
 
 
     
@@ -63,5 +58,17 @@ async def on_message(message):
     print(f'Message received: {message}')
     await bot.process_commands(message)
 
+# RSSの取得と送信
+async def rss_task(feed):
+        # RSSのentryを表示
+    for entry in feed.entries:
+        # updated_parsedが5分以内の場合はdiscordに送信
+        pubdate=datetime.fromtimestamp(time.mktime(entry.updated_parsed), timezone.utc)
+        five_minutes_ago = datetime.now(timezone.utc) - timedelta(minutes=1)
+
+        print(f'pubdate: {pubdate}, five_minutes_ago: {five_minutes_ago}, pubdate > five_minutes_ago: {pubdate > five_minutes_ago}')
+        if pubdate > five_minutes_ago:
+            await bot.get_channel(CHANNEL_ID).send(entry.link)
 
 bot.run(TOKEN)
+
