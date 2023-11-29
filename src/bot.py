@@ -62,7 +62,7 @@ async def on_message(message):
 async def rss_task(feed):
         # RSSのentryを表示
     for entry in feed.entries:
-        # updated_parsedが5分以内の場合はdiscordに送信
+        # updated_parsedが1分以内の場合はdiscordに送信
         pubdate=datetime.fromtimestamp(time.mktime(entry.updated_parsed), timezone.utc)
         five_minutes_ago = datetime.now(timezone.utc) - timedelta(minutes=1)
 
