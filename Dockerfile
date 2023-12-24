@@ -1,16 +1,4 @@
-FROM python:3.10
-
-WORKDIR /app
-
-# プロジェクトの要件をインストール
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
-
-# .env ファイルをコピー
-COPY .env .
-
-# ソースコードをコピー
-COPY src/ .
-
-# Bot を実行
-CMD ["python", "bot.py"]
+FROM python:3.10.5-alpine3.16
+WORKDIR /usr/src/app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
