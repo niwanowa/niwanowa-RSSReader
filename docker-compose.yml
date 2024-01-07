@@ -4,11 +4,3 @@ services:
     # . は現在docker-compose.yamlと同じディレクトリのDockerfileを指しています。
     # 複数のイメージを使う場合などは./botなどディレクトリを指定します。
     build: .
-    volumes:
-      # ./botのディレクトリを仮想環境の/usr/src/appにマウントする
-      # rwと記述することで書き込みも可能なディレクトリとして認識される
-      - ./bot:/usr/src/app:rw 
-    env_file:
-      - .env
-    command: ["python3", "main.py"]
-    tty: true
