@@ -46,9 +46,6 @@ async def on_ready():
 
         await asyncio.sleep(60)
 
-
-    
-
 @bot.command()
 async def test(ctx, arg):
     await ctx.send(arg)
@@ -60,8 +57,8 @@ async def on_message(message):
 
 # RSSの取得と送信
 async def rss_task(feed):
-        # RSSのentryを表示
-    for entry in feed.entries:
+    # RSSのentryを表示
+    for entry in feed.entries[:5]:
         # updated_parsedが1分以内の場合はdiscordに送信
         pubdate=datetime.fromtimestamp(time.mktime(entry.updated_parsed), timezone.utc)
         five_minutes_ago = datetime.now(timezone.utc) - timedelta(minutes=1)
