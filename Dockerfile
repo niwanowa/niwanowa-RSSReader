@@ -12,4 +12,4 @@ COPY .env .
 COPY bot/ .
 
 # Bot を実行
-CMD ["python", "main.py"]
+CMD ["python","-u", "main.py"]
