@@ -37,7 +37,7 @@ async def on_ready():
     # サーバーのオブジェクトから、チャンネルのオブジェクトを取得
     await bot.get_channel(CHANNEL_ID).send('Bot has started.')
 
-    # 5分おきに実行する
+    # 1分おきに実行する
     while True:
         # RSSの取得
         feed = feedparser.parse(RSS_URL)
