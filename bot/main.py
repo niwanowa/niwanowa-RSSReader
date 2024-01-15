@@ -8,6 +8,7 @@ import feedparser
 from datetime import datetime,timedelta,timezone
 import time
 
+import boto3
 
 load_dotenv()
 
