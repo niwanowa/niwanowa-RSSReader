@@ -12,11 +12,31 @@ import boto3
 
 load_dotenv()
 
+# Discordの認証情報を.envから取得
 TOKEN = os.getenv('DISCORD_TOKEN')
 CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
+
+# RSSのURLを.envから取得
 RSS_URL = os.getenv('RSS_URL')
 os.environ['TZ'] = "UTC"
 
+# AWS認証情報を.envから取得 
+AWS_ACCESS_KEY = os.getenv('AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SEACRET_ACCESS_KEY')
+DynamoDB_Table = os.getenv('DynamoDB_TABLE')
+
+# AWSのDynamoDB接続
+dynamodb = boto3.resource('dynamodb',
+    aws_access_key_id=AWS_ACCESS_KEY,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name='ap-northeast-1'
+)
+table = dynamodb.Table(DynamoDB_Table)
+
+print(f'AWS DynamoDB Table: {DynamoDB_Table}')
+print(f'Item Count: {table.item_count}')
+
+# DiscordのBotの設定
 intents = discord.Intents.default()
 intents.guilds = True  # サーバーに関するイベントを取得できるようにする
 intents.message_content = True # メッセージの内容を取得する権限
