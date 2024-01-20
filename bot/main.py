@@ -36,14 +36,6 @@ table = dynamodb.Table(DynamoDB_Table)
 print(f'AWS DynamoDB Table: {DynamoDB_Table}')
 print(f'Item Count: {table.item_count}')
 
-# DynamoDBから全項目を取得
-response = table.scan()
-print(f'DynamoDB Scan: {response}')
-
-CHANNEL_ID = int(response['Items'][0]['channelId'])
-RSS_URL = response['Items'][0]['url']
-
-
 # DiscordのBotの設定
 intents = discord.Intents.default()
 intents.guilds = True  # サーバーに関するイベントを取得できるようにする
@@ -68,6 +60,13 @@ async def on_ready():
 
     # 1分おきに実行する
     while True:
+        # DynamoDBから全項目を取得
+        response = table.scan()
+        print(f'DynamoDB Scan: {response}')
+
+        CHANNEL_ID = int(response['Items'][0]['channelId'])
+        RSS_URL = response['Items'][0]['url']
+
         # RSSの取得
         feed = feedparser.parse(RSS_URL)
         print(f'Get RSS')
