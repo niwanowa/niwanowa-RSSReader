@@ -15,6 +15,7 @@ load_dotenv()
 # Discordの認証情報を.envから取得
 TOKEN = os.getenv('DISCORD_TOKEN')
 CHANNEL_ID = int(os.getenv('CHANNEL_ID'))
+NOTIFICATION_CHANNEL_ID=int(os.getenv('NOTIFICATION_CHANNEL_ID'))
 
 # RSSのURLを.envから取得
 RSS_URL = os.getenv('RSS_URL')
@@ -41,7 +42,7 @@ intents = discord.Intents.default()
 intents.guilds = True  # サーバーに関するイベントを取得できるようにする
 intents.message_content = True # メッセージの内容を取得する権限
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='fffffffffffffffffffffffffffffffffffffffff!', intents=intents)
 
 @bot.event
 async def on_ready():
@@ -56,7 +57,7 @@ async def on_ready():
     print(f'Bot is in the following guild: {guild}')
 
     # サーバーのオブジェクトから、チャンネルのオブジェクトを取得
-    await bot.get_channel(CHANNEL_ID).send('Bot has started.')
+    await bot.get_channel(NOTIFICATION_CHANNEL_ID).send('Bot has started.')
 
     # 1分おきに実行する
     while True:
@@ -73,7 +74,6 @@ async def on_ready():
         await bot.loop.create_task(rss_task(feed))
 
         await asyncio.sleep(60)
-
 @bot.command()
 async def test(ctx, arg):
     await ctx.send(arg)
