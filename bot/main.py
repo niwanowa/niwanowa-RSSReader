@@ -15,6 +15,8 @@ load_dotenv()
 # Discordの認証情報を.envから取得
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
+
+# サービスヘルスチェック用のチャンネルIDを.envから取得
 NOTIFICATION_CHANNEL_ID = int(os.getenv("NOTIFICATION_CHANNEL_ID"))
 
 # RSSのURLを.envから取得
@@ -78,9 +80,9 @@ async def on_ready():
         RSS_URL = response["Items"][0]["url"]
 
         # RSSの取得
-        feed = feedparser.parse(RSS_URL)
+        feeds = feedparser.parse(RSS_URL)
         print(f"Get RSS")
-        await bot.loop.create_task(rss_task(feed))
+        await bot.loop.create_task(rss_task(CHANNEL_ID, feeds))
 
         await asyncio.sleep(60)
 
@@ -102,12 +104,12 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-async def rss_task(feed):
+async def rss_task(CHANNEL_ID, feeds):
     """
     RSSの取得と送信を行う非同期タスク。
     """
     # RSSのentryを表示
-    for entry in feed.entries[-5:]:
+    for entry in feeds.entries[-5:]:
         # updated_parsedが1分以内の場合はdiscordに送信
         pubdate = datetime.fromtimestamp(time.mktime(entry.updated_parsed), timezone.utc)
         five_minutes_ago = datetime.now(timezone.utc) - timedelta(minutes=1)
