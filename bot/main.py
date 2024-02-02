@@ -14,7 +14,6 @@ load_dotenv()
 
 # Discordの認証情報を.envから取得
 TOKEN = os.getenv("DISCORD_TOKEN")
-CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
 
 # サービスヘルスチェック用のチャンネルIDを.envから取得
 NOTIFICATION_CHANNEL_ID = int(os.getenv("NOTIFICATION_CHANNEL_ID"))
