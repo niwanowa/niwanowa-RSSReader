@@ -78,10 +78,14 @@ async def on_ready():
         CHANNEL_ID = int(response["Items"][0]["channelId"])
         RSS_URL = response["Items"][0]["url"]
 
-        # RSSの取得
-        feeds = feedparser.parse(RSS_URL)
-        print(f"Get RSS")
-        await bot.loop.create_task(rss_task(CHANNEL_ID, feeds))
+        for item in response["Items"]:
+            print(f"Item: {item}")
+            CHANNEL_ID = int(item["channelId"])
+            RSS_URL = item["url"]
+            # RSSの取得
+            feeds = feedparser.parse(RSS_URL)
+            print(f"Get RSS")
+            await bot.loop.create_task(rss_task(CHANNEL_ID, feeds))
 
         await asyncio.sleep(60)
 
